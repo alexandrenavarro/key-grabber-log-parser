@@ -1,0 +1,4 @@
+[Sh]Droit au but.[Ent]
+[Alt] firefox[Ent]
+[Ent][Bck][Ent][Ctl]c[Ctl]v[Bck][Ent]
+[Win][Up][Win][Dwn][Win][Lft][Win][Rgh][Win][Up][Ent]
