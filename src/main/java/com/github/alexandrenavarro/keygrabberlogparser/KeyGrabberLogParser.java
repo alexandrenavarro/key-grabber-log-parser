@@ -2,6 +2,8 @@ package com.github.alexandrenavarro.keygrabberlogparser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,12 +43,12 @@ public final class KeyGrabberLogParser {
                             .mapToDouble(e -> e.getValue().doubleValue()).sum();
 
 
-                    System.out.println("Summary of " + sumOfKeyPressed + " keys pressed (without Super or Ctrl) :");
-                    System.out.println("Position, Keys, NbOfTimes, %");
+                    IO.println("Summary of " + sumOfKeyPressed + " keys pressed (without Super or Ctrl) :");
+                    IO.println("Position, Keys, NbOfTimes, %");
                     int keyPosition = 1;
                     for (Map.Entry<KeyPressed, Integer> keyWithModifierPressedIntegerEntry : keyPressed) {
                         final double percentageOfCurrentKeyPressed = (keyWithModifierPressedIntegerEntry.getValue().doubleValue() * 100.0 / sumOfKeyPressed);
-                        System.out.println(keyPosition++ + "," + keyWithModifierPressedIntegerEntry.getKey() + "," + keyWithModifierPressedIntegerEntry.getValue() + "," + decimalFormat.format(percentageOfCurrentKeyPressed));
+                        IO.println(keyPosition++ + "," + keyWithModifierPressedIntegerEntry.getKey() + "," + keyWithModifierPressedIntegerEntry.getValue() + "," + decimalFormat.format(percentageOfCurrentKeyPressed));
                     }
 
 
@@ -59,23 +61,24 @@ public final class KeyGrabberLogParser {
                             .toList();
                     final double sumOfShortcutsPressed = shortcutsPressed.stream()
                             .mapToDouble(e -> e.getValue().doubleValue()).sum();
-                    System.out.println("");
-                    System.out.println("Summary of " + sumOfShortcutsPressed + " shortcuts pressed (with Super or Ctrl)");
-                    System.out.println("Position, Keys, NbOfTimes, %");
+                    IO.println("");
+                    IO.println("Summary of " + sumOfShortcutsPressed + " shortcuts pressed (with Super or Ctrl)");
+                    IO.println("Position, Keys, NbOfTimes, %");
                     int shortCutPosition = 1;
                     for (Map.Entry<KeyPressed, Integer> keyWithModifierPressedIntegerEntry : shortcutsPressed) {
                         final double percentageOfCurrentShortcutPressed = (keyWithModifierPressedIntegerEntry.getValue().doubleValue() * 100.0 / sumOfShortcutsPressed);
-                        System.out.println(shortCutPosition++ + "," + keyWithModifierPressedIntegerEntry.getKey() + "," + keyWithModifierPressedIntegerEntry.getValue() + "," + decimalFormat.format(percentageOfCurrentShortcutPressed));
+                        IO.println(shortCutPosition++ + "," + keyWithModifierPressedIntegerEntry.getKey() + "," + keyWithModifierPressedIntegerEntry.getValue() + "," + decimalFormat.format(percentageOfCurrentShortcutPressed));
                     }
                 } catch (IOException e) {
-                    System.out.println("Failed to parse file:" + args[0] + " because a technical reason : ");
-                    e.printStackTrace(System.out);
+                    final StringWriter sw = new StringWriter();
+                    e.printStackTrace(new PrintWriter(sw));
+                    IO.println("Failed to parse file:" + args[0] + " because a technical reason : " + sw);
                 }
             } else {
-                System.out.println("Failed to parse file:" + args[0] + " because file does not exist.");
+                IO.println("Failed to parse file:" + args[0] + " because file does not exist.");
             }
         } else {
-            System.out.println("Failed to parse file because you must pass as first argument the file path.");
+            IO.println("Failed to parse file because you must pass as first argument the file path.");
         }
     }
 
